@@ -3,6 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DataBungaMelatiController;
+use App\Http\Controllers\Api\DataBusanaController;
+use App\Http\Controllers\Api\DataBusanaKategoriController;
+use App\Http\Controllers\Api\MemberController;
+use App\Http\Controllers\Api\MenuController;
 use App\Http\Controllers\Api\UserController;
 
 /*
@@ -25,13 +30,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::post('/logout', [AuthController::class, 'logout']);
-    
-    // Users CRUD with Casbin authorization
-    Route::middleware('casbin:users,GET')->get('/users', [UserController::class, 'index']);
-    Route::middleware('casbin:users,GET')->get('/users/{user}', [UserController::class, 'show']);
-    Route::middleware('casbin:users,POST')->post('/users', [UserController::class, 'store']);
-    Route::middleware('casbin:users,PUT')->put('/users/{user}', [UserController::class, 'update']);
-    Route::middleware('casbin:users,PATCH')->patch('/users/{user}', [UserController::class, 'update']);
-    Route::middleware('casbin:users,DELETE')->delete('/users/{user}', [UserController::class, 'destroy']);
+
 });
