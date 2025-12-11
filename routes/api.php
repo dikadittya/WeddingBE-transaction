@@ -3,12 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\DataBungaMelatiController;
-use App\Http\Controllers\Api\DataBusanaController;
-use App\Http\Controllers\Api\DataBusanaKategoriController;
-use App\Http\Controllers\Api\MemberController;
-use App\Http\Controllers\Api\MenuController;
-use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\MasterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,5 +25,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+});
 
+Route::prefix('master')->group(function () {
+    Route::get('mua', [MasterController::class, 'listMasterMua']);
+    Route::get('jenis-item-paket', [MasterController::class, 'listMasterJenisItemPaket']);
+    Route::get('item-paket-grup', [MasterController::class, 'listMasterJenisItemPaketWithItems']);
+    Route::prefix('item-paket')->group(function () {
+        Route::get('/', [MasterController::class, 'listMasterItemPaket']);
+        Route::post('/', [MasterController::class, 'storeMasterItemPaket']);
+        Route::get('/{id}', [MasterController::class, 'listMasterItemPaketDetail']);
+        Route::delete('/{id}', [MasterController::class, 'deleteMasterItemPaket']);
+    });
 });
