@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\MasterMua;
 use App\Models\MasterItemPaket;
+use App\Models\MasterItemPaketHarga;
 use App\Models\MasterJenisItemPaket;
 use App\Http\Requests\MasterItemPaketRequest;
+use App\Models\PaketItems;
+use App\Models\PaketMaster;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -71,16 +74,12 @@ class MasterController extends Controller
     public function listMasterItemPaket(Request $request)
     {
         try {
-            $query = MasterItemPaket::select('id', 'nama_item', 'kategori_paket', 'tipe', 'id_jenis')
+            $query = MasterItemPaket::select('id', 'nama_item', 'tipe', 'id_jenis')
                 ->with('jenisItemPaket:id,nama_jenis');
 
             // Apply filters if provided
             if ($request->has('nama_item') && $request->nama_item != '') {
                 $query->where('nama_item', 'like', '%' . $request->nama_item . '%');
-            }
-
-            if ($request->has('kategori_paket') && $request->kategori_paket != '') {
-                $query->where('kategori_paket', $request->kategori_paket);
             }
 
             if ($request->has('tipe') && $request->tipe != '') {
@@ -113,8 +112,12 @@ class MasterController extends Controller
     public function listMasterItemPaketDetail($id)
     {
         try {
-            $masterItemPaket = MasterItemPaket::select('id', 'nama_item', 'kategori_paket', 'tipe', 'id_jenis')
+            $masterItemPaket = MasterItemPaket::select('id', 'nama_item', 'tipe', 'id_jenis')
                 ->with('jenisItemPaket:id,nama_jenis')
+                ->with(['harga' => function($query) {
+                    $query->select('id', 'id_master_item_paket', 'id_master_mua', 'harga')
+                          ->with('masterMua:id,nama_mua');
+                }])
                 ->orderBy('id', 'asc')
                 ->where('id', $id)
                 ->first();
@@ -143,51 +146,33 @@ class MasterController extends Controller
         DB::beginTransaction();
         
         try {
-            // Check if nama_jenis already exists in MasterJenisItemPaket
-            $jenisItemPaket = MasterJenisItemPaket::where('nama_jenis', $request->nama_jenis)->first();
-            
-            // If not exists, create new MasterJenisItemPaket
-            if (!$jenisItemPaket) {
-                $jenisItemPaket = MasterJenisItemPaket::create([
-                    'nama_jenis' => $request->nama_jenis,
-                    'deskripsi' => null
-                ]);
-            }
 
-            // Check if combination already exists
-            $exists = MasterItemPaket::where('id_jenis', $jenisItemPaket->id)
-                ->where('nama_item', $request->nama_item)
-                ->where('kategori_paket', $request->kategori_paket)
-                ->exists();
-            
-            if ($exists) {
-                DB::rollBack();
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Kombinasi jenis item, nama item, dan kategori paket sudah ada.',
-                    'errors' => [
-                        'nama_item' => ['Kombinasi jenis item, nama item, dan kategori paket sudah ada.']
-                    ]
-                ], 422);
-            }
-
-            // Create MasterItemPaket with id_jenis from MasterJenisItemPaket
-            $masterItemPaket = MasterItemPaket::create([
-                'id_jenis' => $jenisItemPaket->id,
-                'nama_item' => $request->nama_item,
-                'kategori_paket' => $request->kategori_paket,
-                'tipe' => $request->tipe
+            // master_item_paket
+            // $masterItemPaket = MasterItemPaket::where('id', $request->id_master_item_paket)->first();
+            // paket_master
+            $paketMaster = PaketMaster::where('id', $request->id_paket)->first();
+            // insert master_item_paket_harga
+            MasterItemPaketHarga::create([
+                'id_paket' => $request->id_paket,
+                'id_master_item_paket' => $request->id_master_item_paket,
+                'harga' => $request->harga,
+                'kategori' => $paketMaster->jenis_paket,
+                'id_master_mua' => $paketMaster->id_mua,
+            ]);
+            // insert paket_items
+            PaketItems::create([
+                'id_paket_master' => $request->id_paket,
+                'id_master_item_paket' => $request->id_master_item_paket,
+                'volume' => $request->volume,
             ]);
 
-            // Load the relationship for response
-            $masterItemPaket->load('jenisItemPaket:id,nama_jenis');
 
             DB::commit();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Master Item Paket berhasil disimpan',
-                'data' => $masterItemPaket
+                'message' => 'Data berhasil disimpan',
+                'data' => null
             ], 201);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -216,16 +201,16 @@ class MasterController extends Controller
     public function listMasterJenisItemPaketWithItems(Request $request)
     {
         try {
-            $masterJenisItemPaket = MasterJenisItemPaket::select('id', 'nama_jenis')
+            $masterJenisItemPaket = MasterJenisItemPaket::select('order_jenis', 'id', 'nama_jenis')
                 ->with(['itemPakets' => function($query) use ($request) {
-                    $query->select('id', 'id_jenis', 'nama_item', 'kategori_paket', 'tipe');
-                          
-                    if ($request->has('kategori_paket') && $request->kategori_paket != '') {
-                        $query->where('kategori_paket', $request->kategori_paket);
-                    }
-                    $query = $query->orderBy('id', 'asc');
+                    $query->select('order_item', 'id', 'id_jenis', 'nama_item', 'tipe');
+                    // $query->with(['harga' => function($query) {
+                    //     $query->select('id', 'id_master_item_paket', 'id_master_mua', 'harga')
+                    //         ->with('masterMua:id,nama_mua');
+                    // }]);
+                    $query = $query->orderBy('order_item', 'asc');
                 }])
-                ->orderBy('id', 'asc')
+                ->orderBy('order_jenis', 'asc')
                 ->get();
 
             return response()->json([
@@ -272,6 +257,44 @@ class MasterController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat menghapus data',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get master item paket harga with mua and paket master data
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getMasterItemPaketHargaWithDetails()
+    {
+        try {
+            $data = DB::table('master_item_paket_harga')
+                ->leftJoin('master_mua', 'master_item_paket_harga.id_master_mua', '=', 'master_mua.id')
+                ->leftJoin('paket_master', function($join) {
+                    $join->on('master_item_paket_harga.kategori', '=', 'paket_master.jenis_paket')
+                         ->on('paket_master.id_mua', '=', 'master_item_paket_harga.id_master_mua');
+                })
+                ->select(
+                    'master_item_paket_harga.id AS id_master_item_paket_harga',
+                    'master_item_paket_harga.id_master_item_paket',
+                    'master_item_paket_harga.id_master_mua',
+                    'master_item_paket_harga.harga',
+                    'master_mua.nama_mua',
+                    'master_mua.is_vendor',
+                    'paket_master.nama_paket'
+                )
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
                 'error' => $e->getMessage()
             ], 500);
         }

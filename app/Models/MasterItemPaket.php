@@ -14,12 +14,15 @@ class MasterItemPaket extends Model
     protected $fillable = [
         'id_jenis',
         'nama_item',
-        'kategori_paket',
+        'order_item',
         'tipe'
     ];
 
+    protected $hidden = [
+        'updated_at',
+        'created_at',
+    ];
     protected $casts = [
-        'kategori_paket' => 'string',
         'tipe' => 'string'
     ];
 
@@ -29,5 +32,13 @@ class MasterItemPaket extends Model
     public function jenisItemPaket()
     {
         return $this->belongsTo(MasterJenisItemPaket::class, 'id_jenis');
+    }
+
+    /**
+     * Relationship with MasterItemPaketHarga
+     */
+    public function harga()
+    {
+        return $this->hasMany(MasterItemPaketHarga::class, 'id_master_item_paket');
     }
 }

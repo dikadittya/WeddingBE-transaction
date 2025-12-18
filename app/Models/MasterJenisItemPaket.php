@@ -13,6 +13,7 @@ class MasterJenisItemPaket extends Model
 
     protected $fillable = [
         'nama_jenis',
+        'order_jenis',
         'deskripsi'
     ];
 

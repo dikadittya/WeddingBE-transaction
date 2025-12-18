@@ -22,10 +22,10 @@ class MasterItemPaketRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nama_item' => 'required|string|max:255',
-            'kategori_paket' => 'required|in:gedung,rumahan',
-            'tipe' => 'required|in:reguler,khusus',
-            'nama_jenis' => 'required|string|max:255'
+            'id_paket' => 'required|integer',
+            'id_master_item_paket' => 'required|integer',
+            'harga' => 'required|numeric|min:0',
+            'volume' => 'required|numeric|min:0'
         ];
     }
 
@@ -37,14 +37,17 @@ class MasterItemPaketRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'nama_item.required' => 'Nama item harus diisi',
-            'nama_item.max' => 'Nama item maksimal 255 karakter',
-            'kategori_paket.required' => 'Kategori paket harus diisi',
-            'kategori_paket.in' => 'Kategori paket harus berupa gedung atau rumahan',
-            'tipe.required' => 'Tipe harus diisi',
-            'tipe.in' => 'Tipe harus berupa reguler atau khusus',
-            'nama_jenis.required' => 'Nama jenis harus diisi',
-            'nama_jenis.max' => 'Nama jenis maksimal 255 karakter'
+            'id_paket.required' => 'ID Paket harus diisi',
+            'id_paket.integer' => 'ID Paket harus berupa angka',
+            'id_master_item_paket.required' => 'ID Master Item Paket harus diisi',
+            'id_master_item_paket.integer' => 'ID Master Item Paket harus berupa angka',
+            'id_master_item_paket.exists' => 'ID Master Item Paket tidak valid',
+            'harga.required' => 'Harga harus diisi',
+            'harga.numeric' => 'Harga harus berupa angka',
+            'harga.min' => 'Harga tidak boleh negatif',
+            'volume.required' => 'Volume harus diisi',
+            'volume.numeric' => 'Volume harus berupa angka',
+            'volume.min' => 'Volume tidak boleh negatif'
         ];
     }
 }
