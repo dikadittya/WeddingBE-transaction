@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  api-transaction:
+    build: .
+    container_name: api-transaction
+    volumes:
+      - ../api-transaction:/var/www
+    ports:
+      - "9002:9000"
+    networks:
+      - backend-network
+
+  dev-server:
+    build: .
+    container_name: api-transaction-dev
+    command: php artisan serve --host=0.0.0.0 --port=8002
+    volumes:
+      - ../api-transaction:/var/www
+    ports:
+      - "8002:8002"
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    external: true
