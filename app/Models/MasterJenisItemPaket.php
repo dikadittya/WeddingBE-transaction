@@ -24,4 +24,15 @@ class MasterJenisItemPaket extends Model
     {
         return $this->hasMany(MasterItemPaket::class, 'id_jenis');
     }
+    protected $hidden = [
+        'updated_at',
+        'created_at',
+    ];
+    /**
+     * Get the user's email verified at date formatted.
+     */
+    protected function serializeDate(\DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
 }

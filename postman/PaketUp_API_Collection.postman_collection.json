@@ -1,0 +1,505 @@
+{
+	"info": {
+		"_postman_id": "paket-up-api-collection",
+		"name": "Paket UP API Collection",
+		"description": "Collection for Wedding Backend - Paket UP CRUD API endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List All Paket UP",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/paket-up",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"paket-up"
+					]
+				},
+				"description": "Get list of all paket UP records"
+			}
+		},
+		{
+			"name": "List Paket UP with Filters",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/paket-up?jenis_up=gedung&kode_area=JKT&id_jenis_item_paket=1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"paket-up"
+					],
+					"query": [
+						{
+							"key": "jenis_up",
+							"value": "gedung",
+							"description": "Filter by jenis (gedung/rumahan)"
+						},
+						{
+							"key": "kode_area",
+							"value": "JKT",
+							"description": "Filter by area code"
+						},
+						{
+							"key": "id_jenis_item_paket",
+							"value": "1",
+							"description": "Filter by jenis item paket ID"
+						}
+					]
+				},
+				"description": "Get list of paket UP with optional filters"
+			}
+		},
+		{
+			"name": "Create Paket UP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"jenis_up\": \"gedung\",\n    \"id_jenis_item_paket\": 1,\n    \"kode_area\": \"JKT\",\n    \"nilai_up\": 1500000.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/paket-up",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"paket-up"
+					]
+				},
+				"description": "Create a new paket UP record"
+			}
+		},
+		{
+			"name": "Create Paket UP - Rumahan",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"jenis_up\": \"rumahan\",\n    \"id_jenis_item_paket\": 2,\n    \"kode_area\": \"BDG\",\n    \"nilai_up\": 750000.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/paket-up",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"paket-up"
+					]
+				},
+				"description": "Create a new paket UP record for rumahan type"
+			}
+		},
+		{
+			"name": "Get Paket UP by ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/paket-up/{{paket_up_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"paket-up",
+						"{{paket_up_id}}"
+					]
+				},
+				"description": "Get specific paket UP by ID"
+			}
+		},
+		{
+			"name": "Update Paket UP",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"jenis_up\": \"gedung\",\n    \"id_jenis_item_paket\": 1,\n    \"kode_area\": \"JKT\",\n    \"nilai_up\": 2000000.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/paket-up/{{paket_up_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"paket-up",
+						"{{paket_up_id}}"
+					]
+				},
+				"description": "Update existing paket UP record"
+			}
+		},
+		{
+			"name": "Partial Update Paket UP",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nilai_up\": 1800000.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/paket-up/{{paket_up_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"paket-up",
+						"{{paket_up_id}}"
+					]
+				},
+				"description": "Partial update of paket UP (only specific fields)"
+			}
+		},
+		{
+			"name": "Delete Paket UP",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/paket-up/{{paket_up_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"paket-up",
+						"{{paket_up_id}}"
+					]
+				},
+				"description": "Delete specific paket UP by ID"
+			}
+		},
+		{
+			"name": "Get Paket UP by Jenis - Gedung",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/paket-up/jenis/gedung",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"paket-up",
+						"jenis",
+						"gedung"
+					]
+				},
+				"description": "Get all paket UP records with jenis 'gedung'"
+			}
+		},
+		{
+			"name": "Get Paket UP by Jenis - Rumahan",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/paket-up/jenis/rumahan",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"paket-up",
+						"jenis",
+						"rumahan"
+					]
+				},
+				"description": "Get all paket UP records with jenis 'rumahan'"
+			}
+		},
+		{
+			"name": "Get Paket UP by Area",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/paket-up/area/{{kode_area}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"paket-up",
+						"area",
+						"{{kode_area}}"
+					]
+				},
+				"description": "Get all paket UP records for specific area code"
+			}
+		},
+		{
+			"name": "Validation Test - Invalid Jenis",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"jenis_up\": \"invalid_jenis\",\n    \"id_jenis_item_paket\": 1,\n    \"kode_area\": \"JKT\",\n    \"nilai_up\": 1500000.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/paket-up",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"paket-up"
+					]
+				},
+				"description": "Test validation - should return 422 error for invalid jenis_up"
+			}
+		},
+		{
+			"name": "Validation Test - Missing Required Fields",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"kode_area\": \"JKT\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/paket-up",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"paket-up"
+					]
+				},
+				"description": "Test validation - should return 422 error for missing required fields"
+			}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "paket_up_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "kode_area",
+			"value": "JKT",
+			"type": "string"
+		}
+	]
+}

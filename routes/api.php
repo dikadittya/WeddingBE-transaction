@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MasterController;
 use App\Http\Controllers\Api\PaketMasterController;
 use App\Http\Controllers\Api\PaketItemsController;
+use App\Http\Controllers\Api\PaketUpController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,4 +60,14 @@ Route::prefix('paket-items')->group(function () {
     Route::put('/{id}', [PaketItemsController::class, 'update']);
     Route::delete('/{id}', [PaketItemsController::class, 'destroy']);
     Route::get('/paket-master/{paketMasterId}', [PaketItemsController::class, 'getByPaketMaster']);
+});
+
+Route::prefix('paket-up')->group(function () {
+    Route::get('/', [PaketUpController::class, 'index']);
+    Route::post('/', [PaketUpController::class, 'store']);
+    Route::get('/{id}', [PaketUpController::class, 'show']);
+    Route::put('/{id}', [PaketUpController::class, 'update']);
+    Route::delete('/{id}', [PaketUpController::class, 'destroy']);
+    Route::get('/jenis/{jenis}', [PaketUpController::class, 'getByJenis']);
+    Route::get('/area/{kodeArea}', [PaketUpController::class, 'getByArea']);
 });
