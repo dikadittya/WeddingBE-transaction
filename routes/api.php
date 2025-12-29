@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\MasterController;
 use App\Http\Controllers\Api\PaketMasterController;
 use App\Http\Controllers\Api\PaketItemsController;
 use App\Http\Controllers\Api\PaketUpController;
+use App\Http\Controllers\Api\JobBookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,4 +71,12 @@ Route::prefix('paket-up')->group(function () {
     Route::delete('/{id}', [PaketUpController::class, 'destroy']);
     Route::get('/jenis/{jenis}', [PaketUpController::class, 'getByJenis']);
     Route::get('/area/{kodeArea}', [PaketUpController::class, 'getByArea']);
+});
+
+Route::prefix('job-booking')->group(function () {
+    Route::get('/', [JobBookingController::class, 'index']);
+    Route::post('/', [JobBookingController::class, 'store']);
+    Route::get('/{id}', [JobBookingController::class, 'show']);
+    Route::put('/{id}', [JobBookingController::class, 'update']);
+    Route::delete('/{id}', [JobBookingController::class, 'destroy']);
 });
