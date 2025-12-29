@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('alamat_prov')->nullable();
             $table->text('keterangan')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
+            $table->integer('status_job')->default(0)->comment('0=booking, 1=belum tuntas/detail job terisi, 2=tuntas/job selesai');
             $table->timestamps();
         });
     }
