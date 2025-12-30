@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\PaketItems;
 use App\Http\Requests\PaketItemsRequest;
+use App\Models\MasterItemPaketHarga;
 use Illuminate\Http\JsonResponse;
 
 class PaketItemsController extends Controller
@@ -15,11 +16,22 @@ class PaketItemsController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $paketItems = PaketItems::with('paketMaster', 'masterItemPaket.harga.masterMua')->get();
+            $data = MasterItemPaketHarga::leftJoin('master_mua', 'master_item_paket_harga.id_master_mua', '=', 'master_mua.id')
+                ->leftJoin('paket_master', function($join) {
+                    $join->on('master_item_paket_harga.kategori', '=', 'paket_master.jenis_paket')
+                         ->on('paket_master.id_mua', '=', 'master_item_paket_harga.id_master_mua');
+                })
+                ->select(
+                    'master_item_paket_harga.*', 
+                    'master_mua.nama_mua', 
+                    'master_mua.is_vendor', 
+                    'paket_master.nama_paket'
+                )
+                ->get();
             
             return response()->json([
                 'status' => 'success',
-                'data' => $paketItems
+                'data' => $data
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -36,7 +48,21 @@ class PaketItemsController extends Controller
     public function store(PaketItemsRequest $request): JsonResponse
     {
         try {
-            $paketItems = PaketItems::create($request->validated());
+            $masterItemPaket = MasterItemPaketHarga::where('id_master_item_paket', $request->input('id_master_item_paket'))->first();
+            $paketItems = PaketItems::create($request->only([
+                'id_paket_master',
+                'id_master_item_paket',
+                'volume'
+            ]));
+
+            if ($request->filled('harga')) {
+                MasterItemPaketHarga::create([
+                    'id_master_item_paket' => $request->input('id_master_item_paket'),
+                    'harga' => $request->input('harga'),
+                    'kategori' => $masterItemPaket->kategori,
+                    'id_master_mua' => $masterItemPaket->id_master_mua
+                ]);
+            }
 
             return response()->json([
                 'status' => 'success',

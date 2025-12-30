@@ -24,6 +24,8 @@ class PaketItemsRequest extends FormRequest
         $rules = [
             'id_paket_master' => 'required|exists:paket_master,id',
             'id_master_item_paket' => 'required|exists:master_item_paket,id',
+            'volume' => 'nullable|numeric',
+            'harga' => 'nullable|numeric',
         ];
 
         // For update operations, make fields optional with 'sometimes'
@@ -31,6 +33,8 @@ class PaketItemsRequest extends FormRequest
             $rules = [
                 'id_paket_master' => 'sometimes|required|exists:paket_master,id',
                 'id_master_item_paket' => 'sometimes|required|exists:master_item_paket,id',
+                'volume' => 'nullable|numeric',
+                'harga' => 'nullable|numeric',
             ];
         }
 
