@@ -7,6 +7,7 @@ use App\Models\PaketItems;
 use App\Http\Requests\PaketItemsRequest;
 use App\Models\MasterItemPaketHarga;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class PaketItemsController extends Controller
 {
@@ -16,15 +17,24 @@ class PaketItemsController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $data = MasterItemPaketHarga::leftJoin('master_mua', 'master_item_paket_harga.id_master_mua', '=', 'master_mua.id')
+            $data = DB::table('master_item_paket')
+                ->leftJoin('master_item_paket_harga', 'master_item_paket.id', '=', 'master_item_paket_harga.id_master_item_paket')
+                ->leftJoin('master_mua', 'master_item_paket_harga.id_master_mua', '=', 'master_mua.id')
                 ->leftJoin('paket_master', function($join) {
                     $join->on('master_item_paket_harga.kategori', '=', 'paket_master.jenis_paket')
                          ->on('paket_master.id_mua', '=', 'master_item_paket_harga.id_master_mua');
                 })
                 ->select(
-                    'master_item_paket_harga.*', 
-                    'master_mua.nama_mua', 
-                    'master_mua.is_vendor', 
+                    'master_item_paket.id',
+                    'master_item_paket.nama_item',
+                    'master_item_paket.tipe',
+                    'master_item_paket.order_item',
+                    'master_item_paket_harga.harga',
+                    'master_item_paket_harga.kategori',
+                    'master_item_paket_harga.id_master_mua AS id_mua',
+                    'master_mua.nama_mua',
+                    'master_mua.is_vendor',
+                    'paket_master.id AS id_paket',
                     'paket_master.nama_paket'
                 )
                 ->get();
