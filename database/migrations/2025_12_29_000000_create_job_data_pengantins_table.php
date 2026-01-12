@@ -35,7 +35,7 @@ return new class extends Migration
             // Foreign key constraint
             $table->foreign('id_job_booking')
                   ->references('id')
-                  ->on('job_bookings')
+                  ->on('job_booking')
                   ->onDelete('cascade');
             
             $table->foreign('created_by')

@@ -65,6 +65,8 @@ class JobBookingController extends Controller
         try {
             $data = $request->validated();
             $data['created_by'] = auth()->check() ? auth()->user()->id : null;
+            $data['code_job'] = date('Ymd') . strtoupper(substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 7));
+            $data['status_job'] = 0; // booking
             
             // Populate address fields from IDs
             if (!empty($data['alamat_kec_id'])) {
@@ -80,12 +82,12 @@ class JobBookingController extends Controller
                 $data['alamat_prov'] = $province ? $province->name : null;
             }
             
-            $jobBooking = JobBooking::create($data);
+            JobBooking::create($data);
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Job booking created successfully',
-                'data' => $jobBooking->load('creator')
+                // 'data' => $jobBooking->load('creator')
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
