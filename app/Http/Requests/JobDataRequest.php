@@ -48,6 +48,82 @@ class JobDataRequest extends FormRequest
             'nilai_tambahan_item' => 'nullable|numeric|min:0',
             'sisa_bayar' => 'nullable|numeric|min:0',
             'catatan_paket' => 'nullable|string',
+            'set_pendamping' => 'nullable|string|max:255',
+            'dekorasi_kode' => 'nullable|string|max:255',
+            'dekorasi_tw' => 'nullable|string|max:255',
+            'dekorasi_admin' => 'nullable|string|max:255',
+            
+            // JobDataMakeup fields
+            'jenis_makeup' => 'nullable|string|max:255',
+            'busana_akad_perempuan' => 'nullable|string|max:255',
+            'busana_akad_laki' => 'nullable|string|max:255',
+            'busana_temu_perempuan' => 'nullable|string|max:255',
+            'busana_temu_laki' => 'nullable|string|max:255',
+            'busana_ganti_perempuan' => 'nullable|string|max:255',
+            'busana_ganti_laki' => 'nullable|string|max:255',
+            'bunga_melati' => 'nullable|string|max:255',
+            'catatan_makeup' => 'nullable|string',
+            'mua_nikah' => 'nullable|string|max:255',
+            'mua_resepsi' => 'nullable|string|max:255',
+            'asisten_nikah' => 'nullable|string|max:255',
+            'asisten_resepsi' => 'nullable|string|max:255',
+            'tambahan_gown' => 'nullable|array',
+            'tambahan_gown.*.nama' => 'nullable|string|max:255',
+            'tambahan_gown.*.jenis' => 'nullable|string|max:255',
+            'tambahan_gown.*.untuk' => 'nullable|string|max:255',
+            
+            // JobDataItemPendamping fields (array)
+            'item_pendampings' => 'nullable|array',
+            'item_pendampings.*.item_pendamping' => 'nullable|string|max:255',
+            'item_pendampings.*.volume' => 'nullable|integer|min:0',
+            'item_pendampings.*.crew_pendamping' => 'nullable|string|max:255',
+            
+            // JobDataItemDekorasi fields (array)
+            'item_dekorasis' => 'nullable|array',
+            'item_dekorasis.*.item_dekorasi' => 'nullable|string|max:255',
+            
+            // JobDataItemDokumentasi fields (array)
+            'item_dokumentasis' => 'nullable|array',
+            'item_dokumentasis.*.item_dokumentasi' => 'nullable|string|max:255',
+            'item_dokumentasis.*.volume' => 'nullable|integer|min:0',
+            'item_dokumentasis.*.dokumentasi_tw' => 'nullable|string|max:255',
+            'item_dokumentasis.*.dokumentasi_admin' => 'nullable|string|max:255',
+            
+            // JobDataItemEntertain fields (array)
+            'item_entertains' => 'nullable|array',
+            'item_entertains.*.item_entertain' => 'nullable|string|max:255',
+            'item_entertains.*.volume' => 'nullable|integer|min:0',
+            'item_entertains.*.entertain_tw' => 'nullable|string|max:255',
+            'item_entertains.*.entertain_admin' => 'nullable|string|max:255',
+            
+            // JobDataItemProperty fields (array)
+            'item_properties' => 'nullable|array',
+            'item_properties.*.item_property' => 'nullable|string|max:255',
+            'item_properties.*.volume' => 'nullable|integer|min:0',
+            'item_properties.*.satuan' => 'nullable|string|max:255',
+            'item_properties.*.property_tw' => 'nullable|string|max:255',
+            'item_properties.*.property_admin' => 'nullable|string|max:255',
+            
+            // JobDataItemLain fields (array)
+            'item_lains' => 'nullable|array',
+            'item_lains.*.item_lain' => 'nullable|string|max:255',
+            'item_lains.*.volume' => 'nullable|integer|min:0',
+            'item_lains.*.satuan' => 'nullable|string|max:255',
+            'item_lains.*.lain_tw' => 'nullable|string|max:255',
+            'item_lains.*.lain_admin' => 'nullable|string|max:255',
+            
+            // JobDataItemTambah fields (array)
+            'item_tambahs' => 'nullable|array',
+            'item_tambahs.*.item_tambah' => 'nullable|string|max:255',
+            'item_tambahs.*.nilai' => 'nullable|numeric|min:0',
+            
+            // JobDataNoted fields - Keterangan (array)
+            'keterangan' => 'nullable|array',
+            'keterangan.*.isi_noted' => 'nullable|string',
+            
+            // JobDataNoted fields - Catatan (array)
+            'catatan' => 'nullable|array',
+            'catatan.*.isi_noted' => 'nullable|string',
         ];
     }
 

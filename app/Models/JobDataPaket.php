@@ -19,6 +19,10 @@ class JobDataPaket extends Model
         'nilai_tambahan_item',
         'sisa_bayar',
         'catatan_paket',
+        'set_pendamping',
+        'dekorasi_kode',
+        'dekorasi_tw',
+        'dekorasi_admin',
     ];
 
     protected $casts = [

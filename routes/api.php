@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\PaketMasterController;
 use App\Http\Controllers\Api\PaketItemsController;
 use App\Http\Controllers\Api\PaketUpController;
 use App\Http\Controllers\Api\JobBookingController;
+use App\Http\Controllers\Api\JobDataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,4 +80,7 @@ Route::prefix('job-booking')->group(function () {
     Route::get('/{id}', [JobBookingController::class, 'show']);
     Route::put('/{id}', [JobBookingController::class, 'update']);
     Route::delete('/{id}', [JobBookingController::class, 'destroy']);
+});
+Route::prefix('job-data')->group(function () {
+    Route::post('/', [JobDataController::class, 'store']);
 });
