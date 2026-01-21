@@ -20,6 +20,7 @@ class PaketItemsController extends Controller
             $data = DB::table('master_item_paket')
                 ->leftJoin('master_item_paket_harga', 'master_item_paket.id', '=', 'master_item_paket_harga.id_master_item_paket')
                 ->leftJoin('master_mua', 'master_item_paket_harga.id_master_mua', '=', 'master_mua.id')
+                ->leftJoin('master_jenis_item_paket', 'master_item_paket.id_jenis', '=', 'master_jenis_item_paket.id')
                 ->leftJoin('paket_master', function($join) {
                     $join->on('master_item_paket_harga.kategori', '=', 'paket_master.jenis_paket')
                          ->on('paket_master.id_mua', '=', 'master_item_paket_harga.id_master_mua');
@@ -32,6 +33,8 @@ class PaketItemsController extends Controller
                     'master_item_paket_harga.harga',
                     'master_item_paket_harga.kategori',
                     'master_item_paket_harga.id_master_mua AS id_mua',
+                    'master_item_paket.id_jenis',
+                    'master_jenis_item_paket.nama_jenis',
                     'master_mua.nama_mua',
                     'master_mua.is_vendor',
                     'paket_master.id AS id_paket',
